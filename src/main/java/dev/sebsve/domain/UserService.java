@@ -46,8 +46,8 @@ public class UserService {
                 .toList();
     }
 
-    public UserApi updateUser(UserApi newUser) {
-        var updatedUser =  userRepository.findById(newUser.id())
+    public UserApi updateUser(String id, UserApi newUser) {
+        var updatedUser =  userRepository.findById(id)
                 .map(user -> User.builder()
                         .username(newUser.userName())
                         .password(newUser.password())
