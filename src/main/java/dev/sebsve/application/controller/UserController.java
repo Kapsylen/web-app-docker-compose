@@ -22,7 +22,7 @@ public class UserController {
             @ApiResponse(responseCode = "201", description = "Successfully created"),
             @ApiResponse(responseCode = "404", description = "Not found - The User was not found")
     })
-    @PostMapping("/user")
+    @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public UserApi createUser(@RequestBody UserApi userApi) {
         return userService.createUser(userApi);
@@ -74,11 +74,11 @@ public class UserController {
 
     @Operation(summary = "Update a User", description = "Update a User")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Successfully updated"),
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - The User was not found")
     })
-    @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping("/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/user/{id}")
     public UserApi updateUser(@PathVariable String id, @RequestBody UserApi userApi) {
         return userService.updateUser(id, userApi);
     }
