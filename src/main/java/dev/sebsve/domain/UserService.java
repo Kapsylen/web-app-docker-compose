@@ -4,6 +4,7 @@ import dev.sebsve.application.model.UserApi;
 import dev.sebsve.infrastructue.UserRepository;
 import dev.sebsve.infrastructue.model.User;
 import lombok.AllArgsConstructor;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import static dev.sebsve.application.model.UserApi.toUserApi;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JdbcClient jdbcClient;
 
     public UserApi createUser(UserApi user) {
        return toUserApi(userRepository.save(
@@ -29,6 +31,17 @@ public class UserService {
     public UserApi findUserById(String id) {
         return toUserApi(userRepository.findById(id)
                 .orElseThrow(RuntimeException::new));
+    }
+
+    public List<UserApi> findAll() {
+        return jdbcClient.sql("select * from users")
+                .query(User.class)
+                .list().stream().map(user -> UserApi.builder()
+                        .id(user.getId())
+                        .email(user.getEmail())
+                        .userName(user.getUsername())
+                        .password(user.getPassword()).build()
+                ).toList();
     }
 
     public UserApi findUserByUsername(String username) {

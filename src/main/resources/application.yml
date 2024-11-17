@@ -1,16 +1,10 @@
 spring:
-  application:
-    name: web-app
-  datasource:
-    url: jdbc:h2:mem:user-db
-    username: sa
-    password:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      path: /h2
   sql:
     init:
-      mode: always
+      mode: never
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/user-db
+    hikari:
+      username: postgres
+      password: postgres

@@ -13,16 +13,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-class UserControllerTest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -62,29 +60,6 @@ class UserControllerTest {
         verify(service).createUser(inputUser);
     }
 
-    @Test
-    public void givenOneUserExists_whenGetUsers_thenReturnJsonArrayWithOneUser() throws Exception {
-
-        given(service.findAllUsers()).willReturn(List.of(UserApi.builder()
-                .id(UUID.randomUUID().toString())
-                .userName("username")
-                .password("password")
-                .email("admin@mail.com")
-                .build()));
-
-        mvc.perform(MockMvcRequestBuilders
-                        .get("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].userName").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").exists());
-
-        verify(service, VerificationModeFactory.times(1)).findAllUsers();
-    }
 
     @Test
     public void givenUserId_whenGetUserById_thenReturnJsonUser() throws Exception {

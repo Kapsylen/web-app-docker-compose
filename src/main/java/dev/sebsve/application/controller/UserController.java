@@ -69,7 +69,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")
     public List<UserApi> getUsers() {
-        return userService.findAllUsers();
+        return userService.findAll();
     }
 
     @Operation(summary = "Update a User", description = "Update a User")
